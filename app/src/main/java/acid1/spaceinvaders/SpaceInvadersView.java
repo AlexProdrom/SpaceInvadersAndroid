@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -18,7 +20,7 @@ import java.io.IOException;
 /**
  * Created by prodromalex on 4/20/2017.
  */
-
+//Provides a dedicated drawing surface embedded inside of a view hierarchy.
 public class SpaceInvadersView extends SurfaceView implements Runnable{
 
     Context context;
@@ -27,6 +29,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
     private Thread gameThread = null;
 
     // Our SurfaceHolder to lock the surface before we draw our graphics
+    //Abstract interface to someone holding a display surface. Allows you to control the surface size and format,
+    // edit the pixels in the surface, and monitor changes to the surface.
     private SurfaceHolder ourHolder;
 
     // A boolean which we will set and unset
@@ -37,10 +41,18 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
     private boolean paused = true;
 
     // A Canvas and a Paint object
+
+    //The Canvas class holds the "draw" calls. To draw something,
+    // you need 4 basic components: A Bitmap to hold the pixels, a
+    // Canvas to host the draw calls (writing into the bitmap), a drawing primitive (e.g. Rect, Path, text, Bitmap),
+    // and a paint (to describe the colors and styles for the drawing).
     private Canvas canvas;
     private Paint paint;
 
     // This variable tracks the game frame rate
+    //It reflects how often an image you see on the screen is
+    // refreshed to produce the image and simulation movement/motion.
+    // The frame rate is most often measured in frames per second or FPS
     private long fps;
 
     // This is used to help calculate the fps
@@ -70,6 +82,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
     private int numBricks;
 
     // For sound FX
+    //The SoundPool class manages and plays audio resources for applications.
     private SoundPool soundPool;
     private int playerExplodeID = -1;
     private int invaderExplodeID = -1;
@@ -164,14 +177,140 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
 
     }
 
-    public void resume() {
-    }
-
-    public void pause() {
-    }
-
     @Override
     public void run() {
+        while (playing) {
+
+            // Capture the current time in milliseconds in startFrameTime
+            long startFrameTime = System.currentTimeMillis();
+
+            // Update the frame
+            if (!paused) {
+                update();
+            }
+
+            // Draw the frame
+            draw();
+
+            // Calculate the fps this frame
+            // We can then use the result to
+            // time animations and more.
+            timeThisFrame = System.currentTimeMillis() - startFrameTime;
+            if (timeThisFrame >= 1) {
+                fps = 1000 / timeThisFrame;
+            }
+
+            // We will do something new here towards the end of the project
+
+        }
+    }
+
+    private void update(){
+
+        // Did an invader bump into the side of the screen
+        boolean bumped = false;
+
+        // Has the player lost
+        boolean lost = false;
+
+        // Move the player's ship
+
+        // Update the invaders if visible
+
+        // Update all the invaders bullets if active
+
+        // Did an invader bump into the edge of the screen
+
+        if(lost){
+            prepareLevel();
+        }
+
+        // Update the players bullet
+
+        // Has the player's bullet hit the top of the screen
+
+        // Has an invaders bullet hit the bottom of the screen
+
+        // Has the player's bullet hit an invader
+
+        // Has an alien bullet hit a shelter brick
+
+        // Has a player bullet hit a shelter brick
+
+        // Has an invader bullet hit the player ship
 
     }
+
+    private void draw(){
+
+        // Make sure our drawing surface is valid or we crash
+        if (ourHolder.getSurface().isValid()) {
+            // Lock the canvas ready to draw
+            canvas = ourHolder.lockCanvas();
+
+            // Draw the background color
+            canvas.drawColor(Color.argb(255, 26, 128, 182));
+
+            // Choose the brush color for drawing
+            paint.setColor(Color.argb(255,  255, 255, 255));
+
+            // Draw the player spaceship
+
+            // Draw the invaders
+
+            // Draw the bricks if visible
+
+            // Draw the players bullet if active
+
+            // Draw the invaders bullets if active
+
+            // Draw the score and remaining lives
+            // Change the brush color
+            paint.setColor(Color.argb(255,  249, 129, 0));
+            paint.setTextSize(40);
+            canvas.drawText("Score: " + score + "   Lives: " + lives, 10,50, paint);
+
+            // Draw everything to the screen
+            ourHolder.unlockCanvasAndPost(canvas);
+        }
+    }
+    // If SpaceInvadersActivity is started then
+    // start our thread.
+    public void resume() {
+        playing = true;
+        gameThread = new Thread(this);
+        gameThread.start();
+    }
+
+    // If SpaceInvadersActivity is paused/stopped
+    // shutdown our thread.
+    public void pause() {
+        playing = false;
+        try {
+            gameThread.join();
+        } catch (InterruptedException e) {
+            Log.e("Error:", "joining thread");
+        }
+    }
+
+    // The SurfaceView class implements onTouchListener
+    // So we can override this method and detect screen touches.
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+
+        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+
+            // Player has touched the screen
+            case MotionEvent.ACTION_DOWN:
+
+                break;
+
+            // Player has removed finger from screen
+            case MotionEvent.ACTION_UP:
+
+                break;
+        }
+        return true;
+    }
+
 }

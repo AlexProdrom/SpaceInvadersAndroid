@@ -1,5 +1,6 @@
 package acid1.spaceinvaders;
 
+import android.app.Activity;
 import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,7 +9,7 @@ import android.view.Display;
 // MainActivity is the entry point to the game.
 // It will handle the lifecycle of the game by calling
 // methods of spaceInvadersView when prompted to so by the OS.
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     // spaceInvadersView will be the view of the game
     // It will also hold the logic of the game
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Get a Display object to access screen details
+        //Display=Provides information about the size and density of a logical display.
         Display display = getWindowManager().getDefaultDisplay();
 
         // Load the resolution into a Point object
