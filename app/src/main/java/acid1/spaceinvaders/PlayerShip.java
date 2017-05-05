@@ -5,15 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 
-/**
- * Created by prodromalex on 4/19/2017.
- */
 
 public class PlayerShip {
 
     //RectF holds four float coordinates for a rectangle. The rectangle is
     // represented by the coordinates of its 4 edges (left, top, right bottom).
-    RectF rect;
+    private RectF rect;
 
     // The player ship will be represented by a Bitmap
     private Bitmap bitmap;
