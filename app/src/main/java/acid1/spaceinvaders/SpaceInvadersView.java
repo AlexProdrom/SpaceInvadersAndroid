@@ -164,6 +164,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
 
     private void prepareLevel(){
 
+        // Reset the menace level
+        menaceInterval = 1000;
         // Here we will initialize all the game objects
 
 
@@ -211,6 +213,24 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
             }
 
             // We will do something new here towards the end of the project
+            if(!paused) {
+                if ((startFrameTime - lastMenaceTime) > menaceInterval) {
+                    if (uhOrOh) {
+                        // Play Uh
+                        soundPool.play(uhID, 1, 1, 0, 0, 1);
+
+                    } else {
+                        // Play Oh
+                        soundPool.play(ohID, 1, 1, 0, 0, 1);
+                    }
+
+                    // Reset the last menace time
+                    lastMenaceTime = System.currentTimeMillis();
+                    // Alter value of uhOrOh
+                    uhOrOh = !uhOrOh;
+                }
+            }
+
 
         }
     }
@@ -227,19 +247,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
         playerShip.update(fps);
 
         // Update the invaders if visible
-
-        // Update all the invaders bullets if active
-        if(bullet.getStatus()){
-            bullet.update(fps);
-        }
-
-        for(int i = 0; i < invadersBullets.length; i++){
-            if(invadersBullets[i].getStatus()) {
-                invadersBullets[i].update(fps);
-            }
-        }
-                // Did an invader bump into the edge of the screen
-
         for(int i = 0; i < numInvaders; i++){
 
             if(invaders[i].getVisibility()) {
@@ -279,6 +286,34 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
 
         }
 
+        // Update all the invaders bullets if active
+        if(bullet.getStatus()){
+            bullet.update(fps);
+        }
+
+        for(int i = 0; i < invadersBullets.length; i++){
+            if(invadersBullets[i].getStatus()) {
+                invadersBullets[i].update(fps);
+            }
+        }
+                // Did an invader bump into the edge of the screen
+        if(bumped){
+
+            // Move all the invaders down and change direction
+            for(int i = 0; i < numInvaders; i++){
+                invaders[i].dropDownAndReverse();
+                // Have the invaders landed
+                if(invaders[i].getY() > screenY - screenY / 10){
+                    lost = true;
+                }
+            }
+
+            // Increase the menace level
+            // By making the sounds more frequent
+            menaceInterval = menaceInterval - 80;
+        }
+
+
         if(lost){
             prepareLevel();
         }
@@ -314,8 +349,17 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
 
             // Draw the player spaceship
             canvas.drawBitmap(playerShip.getBitmap(), playerShip.getX(), screenY - 50, paint);
-            // Draw the invaders
 
+            // Draw the invaders
+            for(int i = 0; i < numInvaders; i++){
+                if(invaders[i].getVisibility()) {
+                    if(uhOrOh) {
+                        canvas.drawBitmap(invaders[i].getBitmap(), invaders[i].getX(), invaders[i].getY(), paint);
+                    }else{
+                        canvas.drawBitmap(invaders[i].getBitmap2(), invaders[i].getX(), invaders[i].getY(), paint);
+                    }
+                }
+            }
             // Draw the bricks if visible
 
             // Draw the players bullet if active
