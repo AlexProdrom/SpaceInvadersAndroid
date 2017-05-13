@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.support.v7.app.AppCompatActivity;
@@ -330,11 +331,36 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
         // Update the players bullet
 
         // Has the player's bullet hit the top of the screen
-
+        if(bullet.getImpactPointY() < 0){
+            bullet.setInactive();
+        }
         // Has an invaders bullet hit the bottom of the screen
-
+        for(int i = 0; i < invadersBullets.length; i++){
+            if(invadersBullets[i].getImpactPointY() > screenY){
+                invadersBullets[i].setInactive();
+            }
+        }
         // Has the player's bullet hit an invader
+        if(bullet.getStatus()) {
+            for (int i = 0; i < numInvaders; i++) {
+                if (invaders[i].getVisibility()) {
+                    if (RectF.intersects(bullet.getRect(), invaders[i].getRect())) {
+                        invaders[i].setInvisible();
+                        soundPool.play(invaderExplodeID, 1, 1, 0, 0, 1);
+                        bullet.setInactive();
+                        score = score + 10;
 
+                        // Has the player won
+                        if(score == numInvaders * 10){
+                            paused = true;
+                            score = 0;
+                            lives = 3;
+                            prepareLevel();
+                        }
+                    }
+                }
+            }
+        }
         // Has an alien bullet hit a shelter brick
 
         // Has a player bullet hit a shelter brick
