@@ -329,7 +329,9 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
         }
 
         // Update the players bullet
-
+        if(bullet.getStatus()){
+            bullet.update(fps);
+        }
         // Has the player's bullet hit the top of the screen
         if(bullet.getImpactPointY() < 0){
             bullet.setInactive();
@@ -362,11 +364,53 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
             }
         }
         // Has an alien bullet hit a shelter brick
+        for(int i = 0; i < invadersBullets.length; i++){
+            if(invadersBullets[i].getStatus()){
+                for(int j = 0; j < numBricks; j++){
+                    if(bricks[j].getVisibility()){
+                        if(RectF.intersects(invadersBullets[i].getRect(), bricks[j].getRect())){
+                            // A collision has occurred
+                            invadersBullets[i].setInactive();
+                            bricks[j].setInvisible();
+                            soundPool.play(damageShelterID, 1, 1, 0, 0, 1);
+                        }
+                    }
+                }
+            }
 
+        }
         // Has a player bullet hit a shelter brick
-
+        if(bullet.getStatus()){
+            for(int i = 0; i < numBricks; i++){
+                if(bricks[i].getVisibility()){
+                    if(RectF.intersects(bullet.getRect(), bricks[i].getRect())){
+                        // A collision has occurred
+                        bullet.setInactive();
+                        bricks[i].setInvisible();
+                        soundPool.play(damageShelterID, 1, 1, 0, 0, 1);
+                    }
+                }
+            }
+        }
         // Has an invader bullet hit the player ship
+        for(int i = 0; i < invadersBullets.length; i++){
+            if(invadersBullets[i].getStatus()){
+                if(RectF.intersects(playerShip.getRect(), invadersBullets[i].getRect())){
+                    invadersBullets[i].setInactive();
+                    lives --;
+                    soundPool.play(playerExplodeID, 1, 1, 0, 0, 1);
 
+                    // Is it game over?
+                    if(lives == 0){
+                        paused = true;
+                        lives = 3;
+                        score = 0;
+                        prepareLevel();
+
+                    }
+                }
+            }
+        }
     }
 
     private void draw(){
