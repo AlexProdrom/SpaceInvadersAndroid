@@ -47,10 +47,6 @@ public class PlayerShip {
         length = screenX/10;
         height = screenY/10;
 
-        // Start ship in roughly the screen centre
-        x = screenX / 2;
-        y = screenY - 20;
-
         // Initialize the bitmap
         //Creates Bitmap objects from various sources, including files, streams, and byte-arrays.
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.playership);
@@ -63,6 +59,10 @@ public class PlayerShip {
                 (int) (length),
                 (int) (height),
                 false);
+
+        // Start ship in roughly the screen centre
+        x = screenX / 2-bitmap.getWidth()/2;
+        y = screenY - bitmap.getHeight();
 
         // How fast is the spaceship in pixels per second
         shipSpeed = 350;
@@ -81,6 +81,11 @@ public class PlayerShip {
     //x and length for firing bullets dead-centre from the ship
     public float getX(){
         return x;
+    }
+
+    //x and length for firing bullets dead-centre from the ship
+    public float getY(){
+        return y;
     }
 
     public float getLength(){

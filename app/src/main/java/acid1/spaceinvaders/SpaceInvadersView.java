@@ -9,7 +9,6 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -17,17 +16,10 @@ import android.view.SurfaceView;
 
 import java.io.IOException;
 
-
-/**
- * Created by prodromalex on 4/20/2017.
- */
-
-//Provides a dedicated drawing surface embedded inside of a view hierarchy.
 public class SpaceInvadersView extends SurfaceView implements Runnable{
 
     Context context;
 
-    // This is our thread
     private Thread gameThread = null;
 
     // Our SurfaceHolder to lock the surface before we draw our graphics
@@ -35,14 +27,9 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
     // edit the pixels in the surface, and monitor changes to the surface.
     private SurfaceHolder ourHolder;
 
-    // A boolean which we will set and unset
-    // when the game is running- or not.
     private volatile boolean playing;
 
-    // Game is paused at the start
     private boolean paused = true;
-
-    // A Canvas and a Paint object
 
     //The Canvas class holds the "draw" calls. To draw something,
     // you need 4 basic components: A Bitmap to hold the pixels, a
@@ -107,14 +94,10 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
     private long lastMenaceTime = System.currentTimeMillis();
 
     public SpaceInvadersView(Context context, int x, int y) {
-        // The next line of code asks the
-        // SurfaceView class to set up our object.
         super(context);
 
-        // Make a globally available copy of the context so we can use it in another method
         this.context = context;
 
-        // Initialize ourHolder and paint objects
         this.ourHolder = getHolder();
         this.paint = new Paint();
 
@@ -233,7 +216,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
                         // Play Oh
                         soundPool.play(ohID, 1, 1, 0, 0, 1);
                     }
-
                     // Reset the last menace time
                     lastMenaceTime = System.currentTimeMillis();
                     // Alter value of uhOrOh
@@ -427,7 +409,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable{
             paint.setColor(Color.argb(255,  255, 255, 255));
 
             // Draw the player spaceship
-            canvas.drawBitmap(playerShip.getBitmap(), playerShip.getX(), screenY - 50, paint);
+            canvas.drawBitmap(playerShip.getBitmap(), playerShip.getX(), playerShip.getY(), paint);
 
             // Draw the invaders
             for(int i = 0; i < numInvaders; i++){
