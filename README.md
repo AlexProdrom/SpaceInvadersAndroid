@@ -1,8 +1,9 @@
-# Space Invaders
+# Space Invaders 🚀 👾
 
 **Version: 1.0**
 
 As Space Invaders is one of the legendary games, this project represents a simple and classy Space Invaders built for learning purposes!
+![preview image](https://github.com/AlexProdrom/space-invaders/blob/master/docs/preview_image.png)
 
 ## Installation
 
