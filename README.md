@@ -25,7 +25,7 @@ In order to move your spaceship, click on the left to move to the left and on th
 
 ## History
 
-The project is still at its first version. There will appear more features and repairs in the future.
+The project is at its first and last version, as it successfully met its purpose.
 
 ## Credits
 
