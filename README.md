@@ -2,8 +2,6 @@
 
 As Space Invaders is one of the legendary games, this project represents a simple and classy Space Invaders built for learning purposes!
 
-[![GitHub version](https://badge.fury.io/gh/AlexProdrom%2Fspace-invaders.svg)](https://github.com/AlexProdrom/space-invaders/releases)
-
 ![preview image](https://github.com/AlexProdrom/space-invaders/blob/master/docs/preview_image.png)
 
 ## Installation
